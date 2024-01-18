@@ -1,0 +1,116 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/*
+    This blockMeshDict generates a simple cube with a uniform 10x10x10 mesh.
+    It only requires three lists: vertices, blocks, and boundary.
+*/
+
+
+/*
+    List of vertices.
+    These are the points you use to create the blocks.
+    In this example, there are 8 vertices corresponing to the
+    vertices of a cube.
+*/
+vertices
+(
+    ( 0  0  0)    // vertex number 0
+    ( 1  0  0)    // vertex number 1
+    ( 1  1  0)    // vertex number 2
+    ( 0  1  0)    // vertex number 3
+    ( 0  0  1)    // vertex number 4
+    ( 1  0  1)    // vertex number 5
+    ( 1  1  1)    // vertex number 6
+    ( 0  1  1)    // vertex number 7
+);
+
+/*
+    List of blocks.
+    Each block is defined by a shape (only hex) followed by the list 
+    of vertices. The mesh in the block is defined specifying the number
+    of cells in each direction and the grading. 
+*/
+blocks
+(
+    hex (0 1 2 3 4 5 6 7)    // vertex numbers
+    (10 10 10)               // numbers of cells in each direction
+    simpleGrading (1 1 1)    // cell expansion ratios
+);
+
+/*
+    Boundary definition. 
+    The boundary is composed by patches. 
+    Each patch requires a patch name, a patch type, and a list of faces.
+    Each face is defined by a list of vertices, which must correspond
+    to a block face.
+*/
+boundary              
+(
+    x0                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (0 4 7 3)  // block face in this patch
+        );
+    }                  
+
+    x1                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (1 5 6 2)  // block face in this patch
+        );
+    }                  
+
+    y0                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (0 4 5 1)  // block face in this patch
+        );
+    }                  
+
+    y1                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (3 7 6 2)  // block face in this patch
+        );
+    }                  
+
+    z0                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (0 1 2 3)  // block face in this patch
+        );
+    }                  
+
+    z1                 // patch name
+    {
+        type patch;    // patch type ("patch" is generic)
+        faces          // List of faces
+        (
+            (4 5 6 7)  // block face in this patch
+        );
+    }                  
+);
